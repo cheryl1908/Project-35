@@ -1,19 +1,23 @@
 class Food{
     constructor(){
-        this.milkBottleImg=loadImage("images/Milk.png");
-        var foodStock,lastFed;
+        this.milkBottleImg=loadImage("Milk.png");
+        this.foodStock=0;
+        this.lastFed=0;
     }
 
     getFoodStock(){
-        var FoodScockRef = database.ref('Food');
-        FoodScockRef.on("value",function(data){
-           gameState = data.val();
-        })
+       return this.foodStock;
     }
-    updateFoodStock(){
-        database.ref('/').update({
-            foodStock: foodStock
-          });
+    updateFoodStock(foodStock){
+        this.foodStock=foodStock;
+    }
+    deductFood(){
+        if(this.foodStock>0){
+            this.foodStock-=1;
+        }
+    }
+    getFedTime(lastfed){
+        this.lastFed=lastfed;
     }
     display(){
         var x=80,y=100;
