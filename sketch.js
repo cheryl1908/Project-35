@@ -8,15 +8,15 @@ function preload()
 }
 
 function setup() {
-  createCanvas(500,500);
+  createCanvas(1000,500);
   food=createButton("Feed the Dog");
   food.position(700,95);
   food.mousePressed(feedDog);
   addFood=createButton("add Food");
   addFood.position(800,95);
-  addFood.mousePressed(addFood);
+  addFood.mousePressed(addFoods);
 
-  dog=createSprite(200,200)
+  dog=createSprite(800,200,150,150)
   dog.addImage(dogImg);
   dog.scale=0.1;
 
@@ -30,8 +30,8 @@ function setup() {
 
 function feedDog(){
   dog.addImage(dogHap);
-  if(foodObj.getFoodStock<=0){
-    foodObj.updateFoodStock(foodObj.getFoodStock*0);
+  if(foodObj.getFoodStock()<=0){
+    foodObj.updateFoodStock(foodObj.getFoodStock()*0);
   }else{
     foodObj.updateFoodStock(foodObj.getFoodStock()-1);
    
@@ -41,17 +41,16 @@ function feedDog(){
       FeedTime:hour()
   })
 }
-
-function addFood(){
-  foodS++;
-  database.ref('/').update({
-    Food:foodS
-  })
+function readStock(data){
+  foodS=data.val();
+  foodObj.updateFoodStock(foodS);
 }
+
 
 
 function draw() {  
   background(46,139,87);
+  foodObj.display();
   fill(255,255,254);
 textSize(15);
   ref=database.ref('FeedTime');
@@ -62,14 +61,19 @@ textSize(15);
 
 if(lastFed>=12){
   text("last Feed :"+lastFed%12 +"pm",350,30);
-}else if(lastFed=0){
+}else if(lastFed==0){
+  text("Last Feed : 12 AM",350,30);
 }else{
   text("last Feed :"+lastFed +"am",350,30);
 }
-  foodObj.display();
+  
   drawSprites();
 
 }
-function readStock(data){
-  foodS=data.val();
+function addFoods(){
+  foodS++;
+  console.log(foodS);
+  database.ref('/').update({
+    Food:foodS
+  })
 }

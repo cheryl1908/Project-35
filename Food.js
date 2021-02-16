@@ -20,9 +20,10 @@ class Food{
         this.lastFed=lastfed;
     }
     display(){
+        console.log(this.foodStock)
         var x=80,y=100;
         imageMode(CENTER);
-        image(this.milkBottleImg,720,220,70,70);
+        //image(this.milkBottleImg,720,220,70,70);
         if(this.foodStock!=0){
             for(var i=0;i<this.foodStock;i++){
                 if(i%10===0){
